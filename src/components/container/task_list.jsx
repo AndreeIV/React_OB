@@ -27,7 +27,7 @@ const TaskListComponent = () => {
     return (
         <div>
             <div>
-                Your tasks: 
+                Your tasks:
             </div>
 
             {/* Aplicar un For/Map para renderizar una lista*/}
