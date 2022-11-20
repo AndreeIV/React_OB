@@ -4,7 +4,7 @@ import { Task } from '../../models/task.class';
 import { LEVELS } from '../../models/levels.enum';
 
 
-const TaskComponent = ({ task }) => {
+const TaskComponent = ({ task, complete, deletes }) => {
 
     useEffect(() => {
         console.log('Created Task');
@@ -20,43 +20,44 @@ const TaskComponent = ({ task }) => {
      */
     function taskLevelBadge() {
         switch (task.level) {
-            case LEVELS.NORMAL:
-                return(
-                    <h6 className='mb-0'>
-                        <span className='badge bg-primary'>
-                            { task.level }
-                        </span>
-                    </h6>
-                )
 
-            case LEVELS.URGENT:
-                return(
-                    <h6 className='mb-0'>
-                        <span className='badge bg-warning'>
-                            { task.level }
-                        </span>
-                    </h6>
-                )
+        case LEVELS.NORMAL:
+            return(
+                <h6 className='mb-0'>
+                    <span className='badge bg-primary'>
+                        { task.level }
+                    </span>
+                </h6>
+            );
+
+        case LEVELS.URGENT:
+            return(
+                <h6 className='mb-0'>
+                    <span className='badge bg-warning'>
+                        { task.level }
+                    </span>
+                </h6>
+            );
                 
-            case LEVELS.BLOCKING:
+        case LEVELS.BLOCKING:
             return(
                 <h6 className='mb-0'>
                     <span className='badge bg-danger'>
                         { task.level }
                     </span>
                 </h6>
-            )
+            );
             
-            default:
-                break;
+        default:
+            break;
         }
     }
 
     function taskIconCompleted() {
         if(task.completed) {
-            return <i className='bi-toggle-on' style={{color: 'green'}}>COMPLETED</i>
+            return <i onClick={ () => complete(task) } className='bi-toggle-on task-action' style={{color: 'green'}}>COMPLETED</i>;
         } else {
-            return <i className='bi-toggle-off' style={{color: 'gray'}}>PENDING</i>
+            return <i onClick={ () => complete(task) } className='bi-toggle-off task-action' style={{color: 'gray'}}>PENDING</i>;
         }
     }
 
@@ -75,33 +76,22 @@ const TaskComponent = ({ task }) => {
             <td className='align-middle'>
                 <span>
                     {taskIconCompleted()}
-                    <i className='bi-trash' style={{color: 'tomato', fontWeight: 'bold'}}></i>
+                    <i className='bi-trash task-action' onClick={ () => deletes(task) } style={{color: 'tomato', fontWeight: 'bold'}}></i>
                 </span>
             </td>
 
 
         </tr>
-
-        // <div>
-        //     <h2>
-        //         Nombre: { task.name }
-        //     </h2>
-        //     <h3>
-        //         Descripción: { task.description }
-        //     </h3>
-        //     <h4>
-        //         Level: { task.level }
-        //     </h4>
-        //     <h5>
-        //         This task is: {task.completed ? 'COMPLETED' : 'PENDING'}
-        //     </h5>
-        // </div>
     );
 };
 
 
 TaskComponent.propTypes = {
-    task: PropTypes.instanceOf(Task)
+    task: PropTypes.instanceOf(Task).isRequired,
+    complete: PropTypes.func.isRequired,
+    deletes: PropTypes.func.isRequired
+
+
 };
 
 
